@@ -1,0 +1,7 @@
+4clojure notes.
+
+Rearranging code #72
+
+(apply + (take 2 (reverse `(3 6 5))))
+
+
