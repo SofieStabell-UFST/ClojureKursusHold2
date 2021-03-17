@@ -28,10 +28,10 @@ cljs.core.swap_BANG_.cljs$core$IFn$_invoke$arity$variadic(calculator.app.xy_atom
 return cljs.core.swap_BANG_.cljs$core$IFn$_invoke$arity$4(calculator.app.xy_atom,cljs.core.assoc_in,new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"y","y",-1757859776)], null),"");
 });
 calculator.app.result = (function calculator$app$result(){
-cljs.core.reset_BANG_(calculator.app.current_value,(function (){var G__27598 = cljs.reader.read_string.cljs$core$IFn$_invoke$arity$1(new cljs.core.Keyword(null,"z","z",-789527183).cljs$core$IFn$_invoke$arity$1(cljs.core.deref(calculator.app.xy_atom)));
-var G__27599 = cljs.reader.read_string.cljs$core$IFn$_invoke$arity$1(new cljs.core.Keyword(null,"y","y",-1757859776).cljs$core$IFn$_invoke$arity$1(cljs.core.deref(calculator.app.xy_atom)));
-var fexpr__27597 = new cljs.core.Keyword(null,"sym","sym",-1444860305).cljs$core$IFn$_invoke$arity$1(cljs.core.deref(calculator.app.xy_atom));
-return (fexpr__27597.cljs$core$IFn$_invoke$arity$2 ? fexpr__27597.cljs$core$IFn$_invoke$arity$2(G__27598,G__27599) : fexpr__27597.call(null,G__27598,G__27599));
+cljs.core.reset_BANG_(calculator.app.current_value,(function (){var G__27601 = cljs.reader.read_string.cljs$core$IFn$_invoke$arity$1(new cljs.core.Keyword(null,"z","z",-789527183).cljs$core$IFn$_invoke$arity$1(cljs.core.deref(calculator.app.xy_atom)));
+var G__27602 = cljs.reader.read_string.cljs$core$IFn$_invoke$arity$1(new cljs.core.Keyword(null,"y","y",-1757859776).cljs$core$IFn$_invoke$arity$1(cljs.core.deref(calculator.app.xy_atom)));
+var fexpr__27600 = new cljs.core.Keyword(null,"sym","sym",-1444860305).cljs$core$IFn$_invoke$arity$1(cljs.core.deref(calculator.app.xy_atom));
+return (fexpr__27600.cljs$core$IFn$_invoke$arity$2 ? fexpr__27600.cljs$core$IFn$_invoke$arity$2(G__27601,G__27602) : fexpr__27600.call(null,G__27601,G__27602));
 })());
 
 return cljs.core.reset_BANG_(calculator.app.xy_atom,new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"y","y",-1757859776),"",new cljs.core.Keyword(null,"z","z",-789527183),cljs.core.deref(calculator.app.current_value),new cljs.core.Keyword(null,"sym","sym",-1444860305),null], null));

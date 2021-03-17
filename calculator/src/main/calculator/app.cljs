@@ -30,6 +30,7 @@
       )
 
 (defn result []
+      ;below code used eval. and is now replaced with read-string and also using operator functions parsed directly from events in the calculate function.
       ;(reset! current-value (js/eval (str (:z @xy-atom)
       ;                                    (:sym @xy-atom)
       ;                                    (:y @xy-atom)
@@ -70,7 +71,7 @@
       )
 
 (defn mini-app []
-      [:table  {:border "1"}                                ;{:style "width:100%"}
+      [:table  {:border "1"}
        [:tbody
         [:tr
          [:td  {:colspan "2"} [:input#result {:readonly "" :type "text" :value  @current-value }]]
