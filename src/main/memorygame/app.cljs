@@ -8,7 +8,7 @@
        [:div.flip-card
         [:div.flip-card-inner
          [:div.flip-card-front [:img {:src "images/halloween-background.png"}]]
-         [:div.flip-card-back [:img {:src "images/halloween-\\" (js/parseInt i)  ".png"}]]]]]
+         [:div.flip-card-back [:img {:src (str "images/halloween-"i".png")}]]]]]
       )
 
 
