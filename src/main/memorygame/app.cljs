@@ -31,9 +31,22 @@
       )
 
 
+;; TODO - work in progress
+;; Creates 4 rows and 4 columns with random number
+;; But we still needs to make sure a number is only used two times
+;; (for [_ (range 1 5)]
+;;  (do
+;;    (for [i (range 1 5)]
+;;      (let [randno (rand-nth (range 1 9))]
+;;        (str randno)))))
+
 (defn miniapp []
-      [:div (display-control-panel)
-       [:div.flex-container (for [i (range 16)] (display-cards i))]])
+  [:div (display-control-panel)
+   ;;rand-nth (range 1 9))
+    (for [_ (range 1 5)]
+      [:div.flex-container (for [i (range 1 5)] (display-cards i))]
+      )
+    ])
 
 ; Herunder ligger funktionerne til at starte det hele op. Dem behøver I ikke bekymre jer om i første omgang
 (defn ^:export run []
