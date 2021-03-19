@@ -4,21 +4,42 @@
     [reagent.dom :as rdom]))
 (defn card [n]
       "return hiccup for card n"
-       [:div.flip-card
+      [:div.flip-card
        [:div.flip-card-inner
         [:div.flip-card-front [:img {:src "images/halloween-background.png"}]]
         ;[:div.flip-card-back [:img {:src "images/halloween-8.png"}]]
-        [:div.flip-card-back [:img {:src (str "images/halloween-"n".png")}]]
+        [:div.flip-card-back [:img {:src (str "images/halloween-" n ".png")}]]
         ]]
+      )
 
-  )
 
 (defn miniapp []
       [:body
+       [:table
+        [:tbody
+         [:tr
+          (for [n (range 1 5)]
+               [:td (card n)]
+               )
+          ]
+         [:tr
+          (for [n (range 5 9)]
+               [:td (card n)]
+               )
+          ]
+         [:tr
+          (for [n (range 1 5)]
+               [:td (card n)]
+               )
+          ]
+         [:tr
+          (for [n (range 1 9)]
+               [:td (card n)]
+               )
+          ]
+         ]]
        [:div.col
-        (for [n (range 1 9)]
-             (card n)
-             )
+
         ]
        ;[:div#app]
        ;[:script {:src "scripts/core.js"}]
