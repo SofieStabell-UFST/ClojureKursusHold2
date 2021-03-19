@@ -4,25 +4,41 @@
     [reagent.dom :as rdom]))
 (defn card [n]
       "return hiccup for card n"
+      [:td
        [:div.flip-card
        [:div.flip-card-inner
         [:div.flip-card-front [:img {:src "images/halloween-background.png"}]]
-        ;[:div.flip-card-back [:img {:src "images/halloween-8.png"}]]
         [:div.flip-card-back [:img {:src (str "images/halloween-"n".png")}]]
-        ]]
-
+        ]]]
   )
 
 (defn miniapp []
       [:body
        [:div.col
-        (for [n (range 1 9)]
-             (card n)
-             )
+        [:table
+         [:tbody
+          [:tr
+           (for [n (range 1 5 )]
+                (card n) )
+           ]
+          [:tr
+           (for [n (range 5 9 )]
+                (card n  ) )
+           ]
+          [:tr
+           (for [n (range 1 5 )]
+                (card n) )
+           ]
+          [:tr
+           (for [n (range 5 9 )]
+                (card n) )
+           ]
+          ]
+         ]
         ]
-       ;[:div#app]
-       ;[:script {:src "scripts/core.js"}]
-       ])
+       ]
+      )
+
 ; Herunder ligger funktionerne til at starte det hele op. Dem behøver I ikke bekymre jer om i første omgang
 (defn ^:export run []
       (rdom/render [miniapp] (js/document.getElementById "app")))
