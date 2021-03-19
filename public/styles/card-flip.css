@@ -1,4 +1,12 @@
 /* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
+.flex-container {
+ background-color: #fff;
+ border: 2px solid #323232;
+ display: flex;
+ flex-flow: row wrap;
+ justify-content: center;
+}
+
 .flip-card {
     background-color: transparent;
     width: 276px;
@@ -42,4 +50,70 @@
     background-color: dodgerblue;
     color: white;
     transform: rotateY(180deg);
+}
+
+.display-panel-container {
+    background-color: lightgrey;
+    color: #323232;
+    margin: 0 auto;
+}
+
+.display-panel-header {
+    padding: 10px;
+    border: 2px solid grey;
+}
+
+h1.display-panel-header{
+    text-align: center;
+    font-weight: bold;
+    color: #323232;
+    text-shadow: 2px 2px 4px #000;
+}
+
+.dp-body {
+    background-color: #323232;
+    color: #fff;
+    border: 2px solid #323232;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5px;
+}
+
+.dp-section1{
+       border-radius: 25px;
+       background-color: white;
+       color: #323232;
+       padding: 20px;
+       margin: 5px;
+}
+
+.dp-section2 {
+  border-radius: 25px;
+  background-color: grey;
+  padding: 20px;
+  margin: 5px;
+}
+
+.dp-label {
+    font-size: 14px;
+}
+
+.dp-btn-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.dp-btn {
+    width: 80px;
+    height: 30px;
+    background-color: silver;
+    border: 2px solid #000;
+    border-radius: 25px;
+    box-shadow: 5px 10px #888888;
+}
+
+.dp-winner {
+    font-weight: bold;
+    color: #323232;
 }
