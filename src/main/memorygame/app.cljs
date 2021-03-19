@@ -18,12 +18,13 @@
  }))
 
 
-(defn tegn-felt [x]
-      [:div.col
-       [:div.flip-card
-        [:div.flip-card-inner
-         [:div.flip-card-front [:img {:src "images/halloween-background.png"}]]
-         [:div.flip-card-back [:img {:src (str "images/halloween-" x ".png")}]]]]])
+(defn kort [xs]
+      [:td {:id (str "felt-" (first xs))}
+       [:div.col
+         [:div.flip-card
+          [:div.flip-card-inner
+           [:div.flip-card-front [:img {:src "images/halloween-background.png"}]]
+           [:div.flip-card-back [:img {:src (str "images/halloween-" (last xs) ".png")}]]]]]])
 
 
 (defn generer-billedrækken [x] (shuffle (concat (range 1 (inc x)) (range 1 (inc x)))))
@@ -31,54 +32,40 @@
 
 (defn miniapp []
       (let [
-            billedrækken (zipmap (range 1 17) (shuffle (concat (range 1 9) (range 1 9))))
-            funktionen (fn [xs] [:td {:id (str "felt-" (first xs))} (tegn-felt (last xs))])
+            kortrækken (map kort (zipmap (range 1 17) (shuffle (concat (range 1 9) (range 1 9)))))
             player1_points 0
-            player2_points 0
-            ]
+            player2_points 0]
 
      [:div.hele-molevitten
       [:table {:border 1}
        [:tr
-        (map funktionen (take 4 billedrækken))
-        ]
+        (take 4 kortrækken)]
        [:tr
-        (map funktionen (take 4 (drop 4 billedrækken)))]
+        (take 4 (drop 4 kortrækken))]
        [:tr
-        (map funktionen (take 4 (drop 8 billedrækken)))]
+        (take 4 (drop 8 kortrækken))]
        [:tr
-        (map funktionen (take 4 (drop 12 billedrækken)))]
-       ]
+        (take 4 (drop 12 kortrækken))]]
 
        [:div.scoreboard
         [:table
          [:tbody
           [:tr
             [:td "Ny runde"]
-            [:td [:button "Ny runde!"]]
-           ]
+            [:td [:button "Ny runde!"]]]
           [:tr
            [:td "Player 1"]
-           [:td player1_points]
-           ]
+           [:td player1_points]]
           [:tr
            [:td "Player 2"]
-           [:td player2_points]
-           ]
+           [:td player2_points]]
           [:tr
            [:td "Næste tur"]
-           [:td (@tilstand :næstespiller ) ]
-           ]
+           [:td (@tilstand :næstespiller ) ]]
           [:tr
            [:td "Total Score i samtilige spil"]
            [:td "Player1 20 Player2 30"]
-           ]
-
-          ]
-         ]
-        ]]
-      )
-      )
+           ]]]]]))
 
 ; Herunder ligger funktionerne til at starte det hele op. Dem behøver I ikke bekymre jer om i første omgang
 (defn ^:export run []
