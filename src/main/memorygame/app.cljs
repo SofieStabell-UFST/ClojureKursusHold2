@@ -4,23 +4,46 @@
     [reagent.dom :as rdom]))
 
 
-(defn show-card [i toggle-class]
-      (let [card-classList (.-classList (.getElementById js/document i))]
-           (js/alert (str "card-classList " card-classList))
-           (js/alert (str "toggle " toggle-class))
-           (.remove card-classList toggle-class)
-           ;(js/alert (str "css2 " card-classList add-class))
-           (.add card-classList toggle-clas)
-           )
+(defn show-card [i]
+      [:div.flip-card-front [:img {:src (str "images/halloween-" i ".png")}]]
       )
 
-(defn display-cards [i]
-      [:div.col
-       [:div.flip-card
-        [:div.flip-card-inner
-         [:div.flip-card-front {:id i :on-click #(show-card i "flip-card-back")} [:img {:src "images/halloween-background.png"}]]
-         [:div.flip-card-back [:img {:src (str "images/halloween-" i ".png")}]]]]]
+(defn hide-card []
+      [:div.flip-card-front [:img {:src (str "images/halloween-background.png")}]]
       )
+
+(defn toggle-card [i]
+      (if @flip
+        (show-card i)
+        (hide-card)
+        )
+      )
+
+(defn display-cards [n]
+      (let [flip? (r/atom false)]
+           [:div.flip-card
+            [:div.flip-card-inner
+             {:class  [(when @flip? "flip")]
+              :on-click (fn []
+                            (if @flip
+                              (do
+                                (show-card i)
+                                (swap! flip? not)
+                                (js/console.log "flip value inside show" @flip?))
+                                )
+                              (do
+                                (hide-card)
+                                (swap! flip? not)
+                                (js/console.log "flip value inside hide" @flip?)
+                                )
+                            )
+              }
+             [:div.flip-card-front [:img {:src "images/halloween-background.png"}]]
+             [:div.flip-card-back [:img {:src (str "images/halloween-" n ".png")}]]
+             ]
+            ]))
+
+
 
 (defn display-control-panel []
       [:div.display-panel-container
@@ -55,8 +78,8 @@
       [:div (display-control-panel)
        ;;rand-nth (range 1 9))
        [:div.flex-container
-        (for [_ (range 1 5)]
-             (for [i (range 1 5)] (display-cards i))
+        (for [_ (range 1 3)]
+             (for [i (range 1 3)] (display-cards i))
              )]
        ]
       )
