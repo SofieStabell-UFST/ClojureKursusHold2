@@ -3,11 +3,22 @@
     [reagent.core :as r]
     [reagent.dom :as rdom]))
 
+
+(defn show-card [i toggle-class]
+      (let [card-classList (.-classList (.getElementById js/document i))]
+           (js/alert (str "card-classList " card-classList))
+           (js/alert (str "toggle " toggle-class))
+           (.remove card-classList toggle-class)
+           ;(js/alert (str "css2 " card-classList add-class))
+           (.add card-classList toggle-clas)
+           )
+      )
+
 (defn display-cards [i]
       [:div.col
        [:div.flip-card
         [:div.flip-card-inner
-         [:div.flip-card-front [:img {:src "images/halloween-background.png"}]]
+         [:div.flip-card-front {:id i :on-click #(show-card i "flip-card-back")} [:img {:src "images/halloween-background.png"}]]
          [:div.flip-card-back [:img {:src (str "images/halloween-" i ".png")}]]]]]
       )
 
@@ -21,7 +32,7 @@
            [:p.dp-label "Round: " " Value"]]]]
         [:div.dp-section2
          [:p.dp-label "Players turn:  " "Name"
-           [:p.dp-label "Score: " " Value"]]]
+          [:p.dp-label "Score: " " Value"]]]
         [:div.dp-section1
          [:div.dp-btn-container
           [:button.dp-btn "Start"]
@@ -41,12 +52,14 @@
 ;;        (str randno)))))
 
 (defn miniapp []
-  [:div (display-control-panel)
-   ;;rand-nth (range 1 9))
-    (for [_ (range 1 5)]
-      [:div.flex-container (for [i (range 1 5)] (display-cards i))]
+      [:div (display-control-panel)
+       ;;rand-nth (range 1 9))
+       [:div.flex-container
+        (for [_ (range 1 5)]
+             (for [i (range 1 5)] (display-cards i))
+             )]
+       ]
       )
-    ])
 
 ; Herunder ligger funktionerne til at starte det hele op. Dem behøver I ikke bekymre jer om i første omgang
 (defn ^:export run []

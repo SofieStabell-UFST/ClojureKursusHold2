@@ -1,0 +1,81 @@
+Index: src/main/memorygame/app.cljs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/memorygame/app.cljs b/src/main/memorygame/app.cljs
+--- a/src/main/memorygame/app.cljs	(revision ffbe33d490fb7e1570b5a00eb254f6b2865c2b4d)
++++ b/src/main/memorygame/app.cljs	(date 1616399635732)
+@@ -3,8 +3,13 @@
+     [reagent.core :as r]
+     [reagent.dom :as rdom]))
+ 
+-(defn display-cards [i]
+-      [:div.col
++(defn show-card [card-no]
++
++      (js/alert (str "Show card for div no " card-no))
++      )
++
++(defn display-cards [card-no]
++      [:div.col {:on-click #(show-card card-no)}
+        [:div.flip-card
+         [:div.flip-card-inner
+          [:div.flip-card-front [:img {:src "images/halloween-background.png"}]]
+@@ -13,7 +18,7 @@
+ 
+ (defn display-control-panel []
+       [:div.display-panel-container
+-       [:h1.display-panel-header "Memory Game"]
++       [:header.display-panel-header "Memory Game"]
+        [:div.dp-body
+         [:div.dp-section1
+          [:p.dp-label "Player 1:  " "Name"
+@@ -21,7 +26,7 @@
+            [:p.dp-label "Round: " " Value"]]]]
+         [:div.dp-section2
+          [:p.dp-label "Players turn:  " "Name"
+-           [:p.dp-label "Score: " " Value"]]]
++          [:p.dp-label "Score: " " Value"]]]
+         [:div.dp-section1
+          [:div.dp-btn-container
+           [:button.dp-btn "Start"]
+@@ -33,7 +38,8 @@
+ 
+ (defn miniapp []
+       [:div (display-control-panel)
+-       [:div.flex-container (for [i (range 16)] (display-cards i))]])
++       [:div.flex-container (for [i (range 1 16)]
++                                 (display-cards i))]])
+ 
+ ; Herunder ligger funktionerne til at starte det hele op. Dem behøver I ikke bekymre jer om i første omgang
+ (defn ^:export run []
+Index: public/styles/card-flip.css
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/public/styles/card-flip.css b/public/styles/card-flip.css
+--- a/public/styles/card-flip.css	(revision ffbe33d490fb7e1570b5a00eb254f6b2865c2b4d)
++++ b/public/styles/card-flip.css	(date 1616160746695)
+@@ -27,7 +27,7 @@
+ }
+ 
+ /* Do an horizontal flip when you move the mouse over the flip box container */
+-.flip-card:hover .flip-card-inner {
++.flip-card:active .flip-card-inner {
+     transform: rotateY(180deg);
+ }
+ 
+@@ -63,9 +63,10 @@
+     border: 2px solid grey;
+ }
+ 
+-h1.display-panel-header{
++header.display-panel-header{
+     text-align: center;
+     font-weight: bold;
++    font-size: 40px;
+     color: #323232;
+     text-shadow: 2px 2px 4px #000;
+ }
