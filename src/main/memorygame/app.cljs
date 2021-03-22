@@ -13,24 +13,30 @@
 ;2   1 vendt not 2 vendt
 ;    1 vendt eq 2 vendt = poæng
 
-
-(def cardArray [[true false] [true false]])
-
+(def card-clicked
+  (r/atom nil))
 
 (defn card [n]
-      "return hiccup for card n"
-      (let  [ flip? (r/atom true)]
-           [:div.flip-card
-            [:div.flip-card-inner
-             {
-              :class [(when @flip? "flip")]
-              :on-click (fn [] (swap! flip? not)
-                            (js/console.log @flip?))
-              }
-             [:div.flip-card-front [:img {:src "images/halloween-background.png"}]]
-             [:div.flip-card-back [:img {:src (str "images/halloween-" n ".png")}]]
-             ]])
-      )
+  "return hiccup for card n"
+  (let [flip? (r/atom false)]
+    (fn [n]
+     [:div.flip-card
+      [:div.flip-card-inner
+       {:class [(when @flip? "flip")]
+        :on-click (fn []
+                    (do (if (nil? @card-clicked)
+                          (do (swap! flip? not)
+                              (reset! card-clicked n))
+                          (do (if (= n @card-clicked)
+                                (do (swap! flip? not)
+                                    (reset! card-clicked n))
+                                (do (swap! flip? not)
+                                    (reset! card-clicked nil)))))))
+        }
+       [:div.flip-card-front [:img {:src "images/halloween-background.png"}]]
+       [:div.flip-card-back [:img {:src (str "images/halloween-" n ".png")}]]
+       ]
+      ])))
 
 
 (defn miniapp []
@@ -39,22 +45,22 @@
         [:tbody
          [:tr
           (for [n (range 1 5)]
-               [:td (card n)]
+            [:td [card n]]
                )
           ]
          [:tr
           (for [n (range 5 9)]
-               [:td (card n)]
+            [:td [card n]]
                )
           ]
          [:tr
           (for [n (range 1 5)]
-               [:td (card n)]
+            [:td [card n]]
                )
           ]
          [:tr
           (for [n (range 5 9)]
-               [:td (card n)]
+            [:td [card n]]
                )
           ]
          ]]
