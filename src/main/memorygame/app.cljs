@@ -3,6 +3,11 @@
     [reagent.core :as r]
     [reagent.dom :as rdom]))
 
+(def player1 (r/atom "Mathias"))
+(def player2 (r/atom "Rohita"))
+(def score (r/atom 0))
+(def round (r/atom 0))
+
 
 (defn show-card [i]
       [:div.flip-card-front [:img {:src (str "images/halloween-" i ".png")}]]
@@ -23,19 +28,19 @@
       (let [flip? (r/atom false)]
            [:div.flip-card
             [:div.flip-card-inner
-             {:class  [(when @flip? "flip")]
+             {:class    [(when @flip? "flip")]
               :on-click (fn []
                             (if @flip
                               (do
                                 (show-card i)
                                 (swap! flip? not)
                                 (js/console.log "flip value inside show" @flip?))
-                                )
-                              (do
-                                (hide-card)
-                                (swap! flip? not)
-                                (js/console.log "flip value inside hide" @flip?)
-                                )
+                              )
+                            (do
+                              (hide-card)
+                              (swap! flip? not)
+                              (js/console.log "flip value inside hide" @flip?)
+                              )
                             )
               }
              [:div.flip-card-front [:img {:src "images/halloween-background.png"}]]
@@ -50,12 +55,14 @@
        [:h1.display-panel-header "Memory Game"]
        [:div.dp-body
         [:div.dp-section1
-         [:p.dp-label "Player 1:  " "Name"
-          [:p.dp-label "Player 2:  " "Name"
-           [:p.dp-label "Round: " " Value"]]]]
+         [:p.dp-label "Round: " @round]
+         [:p.dp-label "Active Player: " @player1]
+         ]
         [:div.dp-section2
-         [:p.dp-label "Players turn:  " "Name"
-          [:p.dp-label "Score: " " Value"]]]
+         [:p.dp-label "Score: " @score]
+         [:p.dp-label "Player 1:  " @player1]
+         [:p.dp-label "Player 2:  " @player2]
+         ]
         [:div.dp-section1
          [:div.dp-btn-container
           [:button.dp-btn "Start"]
