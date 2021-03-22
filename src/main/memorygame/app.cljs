@@ -70,8 +70,8 @@
               [:tbody
                [:tr
                 [:td "Ny runde"]
-                [:td [:input {:type "button" :value "Start ny runde" :on-click #(nyt-spil)}]]
-                [:tr
+                [:td [:input {:type "button" :value "Start ny runde" :on-click #(nyt-spil)}]]]
+               [:tr
                  [:td "Player 1"]
                  [:td  {:colspan "1"} [:input#result {:readonly "" :type "text" :value  ((@tilstand :player1) :points) }]]]
                 [:tr
@@ -83,7 +83,7 @@
                 [:tr
                  [:td "Total Score i samtilige spil"]
                  [:td "Player1 20 Player2 30"]
-                 ]]]]]]))
+                 ]]]]]))
 
 ; Herunder ligger funktionerne til at starte det hele op. Dem behøver I ikke bekymre jer om i første omgang
 (defn ^:export run []
