@@ -21,23 +21,25 @@
                                       }
                        }))
 
+(defn spil [event]
+      (js/console.log event)
+      (print @a)
+      (reset! a event)
+      (print @a))
 
 (defn kort [xs]
-      [:td {:id (str "felt-" (first xs))}
+      [:td {:on-click #(spil "Jeg fungerer") :id (str "felt-" (first xs))}
        [:div.col
         [:div.flip-card
          [:div.flip-card-inner
           [:div.flip-card-front [:img {:src "images/halloween-background.png"}]]
           [:div.flip-card-back [:img {:src (str "images/halloween-" (last xs) ".png")}]]]]]])
 
+;; funktionen (fn [xs] [:td {:on-click #(spil "Jeg fungerer") :id (str "felt-" (first xs))} (tegn-felt (last xs))])
+
 
 (defn generer-billedrækken [x] (shuffle (concat (range 1 (inc x)) (range 1 (inc x)))))
 
-(defn spil [event]
-      (js/console.log event)
-      (print @a)
-      (reset! a event)
-      (print @a))
 
 (defn nyt-spil []
       (reset! billedrækken (zipmap (range 1 17) (shuffle (concat (range 1 9) (range 1 9))))))
@@ -45,8 +47,7 @@
 
 (defn miniapp []
       (let [
-            kortrækken (map kort (zipmap (range 1 17) (shuffle (concat (range 1 9) (range 1 9)))))
-            ;; funktionen (fn [xs] [:td {:on-click #(spil "Jeg fungerer") :id (str "felt-" (first xs))} (tegn-felt (last xs))])
+            kortrækken (map kort billedrækken)
             kortmatrix (partition 4 kortrækken)
             tr (fn [x] [:tr x])
             player1_points 0
