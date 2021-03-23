@@ -6,10 +6,11 @@
 (def a (r/atom nil))
 (def billedrækken-2 (r/atom (zipmap (range 1 17) (shuffle (concat (range 1 9) (range 1 9))))))
 (def billedrækken (r/atom (zipmap (range 1 17) (concat (range 1 9) (range 1 9)))))
+(def allerede-vundet (r/atom ()))
 (def tilstand (atom {
                      :kort         nil
 
-                     :næstespiller :player1
+                     :næstespiller 0
                      :player1      {
                                     :points          0
                                     :name            "Peter"
@@ -28,7 +29,14 @@
              (do
                (swap! tilstand assoc-in [:kort] kort))
              (do
-               (when (= kort (@tilstand :kort)) (swap! tilstand update-in [:player1 :points] inc)))))
+               (if (and (= kort (@tilstand :kort)) (not (some #(= kort %) @allerede-vundet)))
+                 (do
+                   (swap! tilstand update-in [(if
+                                              (even? (@tilstand :næstespiller)) :player1 :player2) :points] inc)
+                   (swap! allerede-vundet conj kort)
+                   (print @allerede-vundet))
+                 (swap! tilstand update-in [:næstespiller] inc))
+               (swap! tilstand assoc-in [:kort] nil))))
       (print @tilstand))
 
 (defn kort [xs]
@@ -62,21 +70,20 @@
               [:tbody
                [:tr
                 [:td "Ny runde"]
-                [:td [:input {:type "button" :value "Start ny runde" :on-click #(nyt-spil)}]]
-                [:tr
+                [:td [:input {:type "button" :value "Start ny runde" :on-click #(nyt-spil)}]]]
+               [:tr
                  [:td "Player 1"]
-                 [:td player1_points]]
+                 [:td  {:colspan "1"} [:input#result {:readonly "" :type "text" :value  ((@tilstand :player1) :points) }]]]
                 [:tr
                  [:td "Player 2"]
-                 [:td player2_points]]
+                 [:td ((@tilstand :player2) :points)]]
                 [:tr
                  [:td "Næste tur"]
                  [:td (@tilstand :næstespiller)]]
                 [:tr
                  [:td "Total Score i samtilige spil"]
                  [:td "Player1 20 Player2 30"]
-                 ]]]]]]))
-
+                 ]]]]]))
 
 ; Herunder ligger funktionerne til at starte det hele op. Dem behøver I ikke bekymre jer om i første omgang
 (defn ^:export run []
