@@ -12,4 +12,4 @@
 ;; in vim using plugin vim-fireplace
 ;; See: https://shadow-cljs.github.io/docs/UsersGuide.html#_fireplace_vim_vim_neovim
 ;; :Connect 55555
-;; :CljEval (shadow/repl :frontend)
+;; :CljEval (shadow/repl :app)
