@@ -26,6 +26,7 @@
 
 (defn display-cards [n]
       (js/console.log n)
+<<<<<<< HEAD
       (let [flip? (r/atom false)]
            [:div.flip-card
             [:div.flip-card-inner
@@ -47,6 +48,13 @@
              [:div.flip-card-front [:img {:src "images/halloween-background.png"}]]
              [:div.flip-card-back [:img {:src (str "images/halloween-" n ".png")}]]
              ] ]))
+      ;; [:div.col
+       ;; [:div.flip-card
+        ;; [:div.flip-card-inner
+         ;; [:div.flip-card-front [:img {:src "images/halloween-background.png"}]]
+         ;; [:div.flip-card-back [:img {:src "images/halloween-" n ".png"}]]]]]
+      ;; )
+
 
 
 
