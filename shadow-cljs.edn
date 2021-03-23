@@ -2,8 +2,14 @@
  :dev-http     {8081 "public"}
  :main         'memorygame.app
  :nrepl        {:port 55555}
- :dependencies [[reagent "1.0.0-alpha2"]]
+ :dependencies [[reagent "1.0.0-alpha2"], [cider/cider-nrepl "0.22.4"]]
  :builds       {:app {:target     :browser
                       :output-dir "public/scripts/"
                       :modules    {:core {:init-fn memorygame.app/run}}
                       :devtools   {:after-load memorygame.app/reload}}}}
+
+
+;; in vim using plugin vim-fireplace
+;; See: https://shadow-cljs.github.io/docs/UsersGuide.html#_fireplace_vim_vim_neovim
+;; :Connect 55555
+;; :CljEval (shadow/repl :frontend)
