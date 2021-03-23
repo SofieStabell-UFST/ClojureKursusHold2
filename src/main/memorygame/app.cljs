@@ -25,85 +25,28 @@
         )))
 
 (defn display-cards [n]
-      (js/console.log "n:")
       (js/console.log n)
-
-        ;; {
-         ;; "meta": null,
-         ;; "cnt": 2,
-         ;; "arr": [
-                 ;; {
-                  ;; "ns": null,
-                  ;; "name": "no",
-                  ;; "fqn": "no",
-                  ;; "_hash": -390373634,
-                  ;; "cljs$lang$protocol_mask$partition0$": 2153775105,
-                  ;; "cljs$lang$protocol_mask$partition1$": 4096
-                  ;; },
-                 ;; 8,
-                 ;; {
-                  ;; "ns": null,
-                  ;; "name": "done",
-                  ;; "fqn": "done",
-                  ;; "_hash": -889844188,
-                  ;; "cljs$lang$protocol_mask$partition0$": 2153775105,
-                  ;; "cljs$lang$protocol_mask$partition1$": 4096
-                  ;; },
-                 ;; false
-                 ;; ],
-         ;; "__hash": null,
-         ;; "cljs$lang$protocol_mask$partition0$": 16647951,
-         ;; "cljs$lang$protocol_mask$partition1$": 139268
-         ;; }
-
-      ;; (def my-hashmap {:a "A" :b "B" :c "C" :d "D"})
-      ;; (def my-nested-hashmap {:a "A" :b "B" :c "C" :d "D" :q {:x "X" :y "Y" :z "Z"}})
-      ;; (let [{a :a d :d} my-hashmap]
-        ;; (println a d))
-      ;; => A D
-      ;; (let [{a :a, b :b, {x :x, y :y} :q} my-nested-hashmap]
-        ;; (println a b x y))
-      ;; => A B X Y
-
-      [:div.col
-       [:div.flip-card
-        [:div.flip-card-inner
-         [:div.flip-card-front [:img {:src "images/halloween-background.png"}]]
-         [:div.flip-card-back [:img {:src "images/halloween-1.png"}]]]]]
-         ;; [:div.flip-card-back [:img {:src "images/halloween-\\" (js/parseInt i)  ".png"}]]]]]
-
-;; [:div.flip-card
-            ;; [:div.flip-card-inner
-             ;; {:class    ["flip"]
-              ;; :on-click (js/console.log "flip value inside show")
-              ;; }
-             ;; [:div.flip-card-front [:img {:src "images/halloween-background.png"}]]
-             ;; [:div.flip-card-back [:img {:src (str "images/halloween-" n ".png")}]]
-             ;; ]
-            ;; ]
-      (comment
       (let [flip? (r/atom false)]
            [:div.flip-card
             [:div.flip-card-inner
              {:class    [(when @flip? "flip")]
               :on-click (fn []
-                            (if @flip
+                            (if @flip?
                               (do
-                                (show-card i)
+                                (show-card n)
                                 (swap! flip? not)
-                                (js/console.log "flip value inside show" @flip?))
+                                (js/console.log "A flip value inside show" @flip?))
                               )
                             (do
                               (hide-card)
                               (swap! flip? not)
-                              (js/console.log "flip value inside hide" @flip?)
+                              (js/console.log "B flip value inside hide" @flip?)
                               )
                             )
               }
              [:div.flip-card-front [:img {:src "images/halloween-background.png"}]]
              [:div.flip-card-back [:img {:src (str "images/halloween-" n ".png")}]]
-             ]
-            ])))
+             ] ]))
 
 
 
