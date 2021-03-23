@@ -3,11 +3,16 @@
     [reagent.core :as r]
     [reagent.dom :as rdom]))
 
+(defn generer-billedrækken [x & cheat]
+      (if cheat
+        (interleave (range 1 (inc x)) (range 1 (inc x)))
+
+        (shuffle (concat (range 1 (inc x)) (range 1 (inc x))))))
+
 (def a (r/atom nil))
-(def billedrækken-2 (r/atom (zipmap (range 1 17) (shuffle (concat (range 1 9) (range 1 9))))))
-(def billedrækken (r/atom (zipmap (range 1 17) (concat (range 1 9) (range 1 9)))))
+(def billedrækken (r/atom (zipmap (range 1 17) (generer-billedrækken 8 :cheat ))))
 (def allerede-vundet (r/atom ()))
-(def tilstand (atom {
+(def tilstand (r/atom {
                      :kort         nil
 
                      :næstespiller 0
@@ -47,11 +52,12 @@
           [:div.flip-card-front [:img {:src "images/halloween-background.png"}]]
           [:div.flip-card-back [:img {:src (str "images/halloween-" (last xs) ".png")}]]]]]])
 
-;; (defn generer-billedrækken [x] (shuffle (concat (range 1 (inc x)) (range 1 (inc x)))))
-
-
 (defn nyt-spil []
-      (reset! billedrækken (zipmap (range 1 17) (shuffle (concat (range 1 9) (range 1 9))))))
+      (reset!
+        billedrækken
+        (zipmap (range 1 17)
+                (generer-billedrækken 8)
+                )))
 
 
 (defn miniapp []
