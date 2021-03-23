@@ -3,65 +3,44 @@
     [reagent.core :as r]
     [reagent.dom :as rdom]))
 
-; Hold 2 -plan:
-;Amal, Tue og Annibeth
-;
-;memory game
-;
-;1 flip kun ved klik event
-;
-;2   1 vendt not 2 vendt
-;    1 vendt eq 2 vendt = poæng
+(def card-clicked (r/atom 0))
+(def y (r/atom false))
+(def card-store [[(r/atom false) (r/atom false)] [(r/atom false) (r/atom false)]])
 
-(def card-clicked
-  (r/atom nil))
+(defn card [n i]
+      "return hiccup for card n"
 
-(defn card [n]
-  "return hiccup for card n"
-  (let [flip? (r/atom false)]
-    (fn [n]
-     [:div.flip-card
-      [:div.flip-card-inner
-       {:class [(when @flip? "flip")]
-        :on-click (fn []
-                    (do (if (nil? @card-clicked)
-                          (do (swap! flip? not)
-                              (reset! card-clicked n))
-                          (do (if (= n @card-clicked)
-                                (do (swap! flip? not)
-                                    (reset! card-clicked n))
-                                (do (swap! flip? not)
-                                    (reset! card-clicked nil)))))))
-        }
-       [:div.flip-card-front [:img {:src "images/halloween-background.png"}]]
-       [:div.flip-card-back [:img {:src (str "images/halloween-" n ".png")}]]
-       ]
-      ])))
+          [:div.flip-card
+           [:div.flip-card-inner
+            {:class    [(when @(get-in card-store [n i]) "flip")]
+             :on-click (fn []
+                           (do (if (or (= n @card-clicked) (= 0 @card-clicked))
+                                 (do (swap! (get-in card-store [n i]) not)
+                                     (reset! card-clicked n))
+                                 ;else
+                                 (do (reset! card-clicked 0)
+                                     (reset! (get-in card-store [n (- 1 i)]) false)))))
+             }
+            [:div.flip-card-front [:img {:src "images/halloween-background.png"}]]
+            [:div.flip-card-back [:img {:src (str "images/halloween-" n ".png")}]]
+            ]
+           ])
 
+(def x (r/atom false))
+(def z (r/atom false))
+(def a (r/atom false))
 
 (defn miniapp []
       [:body
        [:table
         [:tbody
          [:tr
-          (for [n (range 1 5)]
-            [:td [card n]]
-               )
+          [:td (card 1 0)]
+          [:td (card 1 1)]
           ]
          [:tr
-          (for [n (range 5 9)]
-            [:td [card n]]
-               )
-          ]
-         [:tr
-          (for [n (range 1 5)]
-            [:td [card n]]
-               )
-          ]
-         [:tr
-          (for [n (range 5 9)]
-            [:td [card n]]
-               )
+          [:td (card 2 0)]
+          [:td (card 2 1)]
           ]
          ]]
        [:div.col
