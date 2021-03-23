@@ -26,7 +26,6 @@
 
 (defn display-cards [n]
       (js/console.log n)
-<<<<<<< HEAD
       (let [flip? (r/atom false)]
            [:div.flip-card
             [:div.flip-card-inner
