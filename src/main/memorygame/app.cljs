@@ -28,6 +28,43 @@
       (js/console.log "n:")
       (js/console.log n)
 
+        ;; {
+         ;; "meta": null,
+         ;; "cnt": 2,
+         ;; "arr": [
+                 ;; {
+                  ;; "ns": null,
+                  ;; "name": "no",
+                  ;; "fqn": "no",
+                  ;; "_hash": -390373634,
+                  ;; "cljs$lang$protocol_mask$partition0$": 2153775105,
+                  ;; "cljs$lang$protocol_mask$partition1$": 4096
+                  ;; },
+                 ;; 8,
+                 ;; {
+                  ;; "ns": null,
+                  ;; "name": "done",
+                  ;; "fqn": "done",
+                  ;; "_hash": -889844188,
+                  ;; "cljs$lang$protocol_mask$partition0$": 2153775105,
+                  ;; "cljs$lang$protocol_mask$partition1$": 4096
+                  ;; },
+                 ;; false
+                 ;; ],
+         ;; "__hash": null,
+         ;; "cljs$lang$protocol_mask$partition0$": 16647951,
+         ;; "cljs$lang$protocol_mask$partition1$": 139268
+         ;; }
+
+      ;; (def my-hashmap {:a "A" :b "B" :c "C" :d "D"})
+      ;; (def my-nested-hashmap {:a "A" :b "B" :c "C" :d "D" :q {:x "X" :y "Y" :z "Z"}})
+      ;; (let [{a :a d :d} my-hashmap]
+        ;; (println a d))
+      ;; => A D
+      ;; (let [{a :a, b :b, {x :x, y :y} :q} my-nested-hashmap]
+        ;; (println a b x y))
+      ;; => A B X Y
+
       [:div.col
        [:div.flip-card
         [:div.flip-card-inner
@@ -92,14 +129,17 @@
       )
 
 
+;; (def data (r/atom 
 (def data 
   "create 16 maps with 8 maps/pairs from 1-8 with a boolean false. 
   false is going to be used to check if these cards is done" 
-  (shuffle [{1 false} {2 false} {3 false} {4 false}
-            {1 false} {2 false} {3 false} {4 false}
-            {5 false} {6 false} {7 false} {8 false}
-            {5 false} {6 false} {7 false} {8 false}
+  (shuffle [{:no 1 :done false} {:no 2 :done false} {:no 3, :done false} {:no 4, :done false}
+            {:no 1 :done false} {:no 2 :done false} {:no 3, :done false} {:no 4, :done false}
+            {:no 5 :done false} {:no 6 :done false} {:no 7, :done false} {:no 8, :done false}
+            {:no 5 :done false} {:no 6 :done false} {:no 7, :done false} {:no 8, :done false}
             ]))
+
+
 ;; (for [row data] (println "row: " row))
 ;; (print data)
 ;; (shuffle data)
@@ -109,7 +149,7 @@
        [:div.flex-container
         ;; (for [_ (range 1 3)]
              ;; (for [i (range 1 3)] (display-cards i))
-             (for [x data] (display-cards x))]])
+             (for [x data] (display-cards (x :no)))]])
 
 ; Herunder ligger funktionerne til at starte det hele op. Dem behøver I ikke bekymre jer om i første omgang
 (defn ^:export run []
