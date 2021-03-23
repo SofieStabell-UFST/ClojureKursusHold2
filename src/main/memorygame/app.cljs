@@ -25,8 +25,7 @@
                                     :points          0
                                     :name            "Shane"
                                     :antalvundnespil 0
-                                    }
-                     }))
+                                    }}))
 
 (defn spil [event]
       (let [[placering kort] event]
@@ -39,7 +38,17 @@
                    (swap! tilstand update-in [(if
                                               (even? (@tilstand :næstespiller)) :player1 :player2) :points] inc)
                    (swap! allerede-vundet conj kort)
-                   (print @allerede-vundet))
+                   (print @allerede-vundet)
+                   (if (>= ((@tilstand :player1) :points) 5) ; would be nice with an or statement (:player1 OR :player2) as lines 47 to 51 are duplicate.
+                     (do
+                       (swap! tilstand update-in [:player1 :antalvundnespil] inc)
+                       (swap! tilstand assoc-in [:player1 :points] 0)
+                       (swap! tilstand assoc-in [:player2 :points] 0)))
+                   (if (>= ((@tilstand :player2) :points) 5) ; would be nice with an or statement (:player1 OR :player2) as lines 47 to 51 are duplicate.
+                     (do
+                       (swap! tilstand update-in [:player2 :antalvundnespil] inc)
+                       (swap! tilstand assoc-in [:player1 :points] 0)
+                       (swap! tilstand assoc-in [:player2 :points] 0))))
                  (swap! tilstand update-in [:næstespiller] inc))
                (swap! tilstand assoc-in [:kort] nil))))
       (print @tilstand))
@@ -55,9 +64,7 @@
 (defn nyt-spil []
       (reset!
         billedrækken
-        (zipmap (range 1 17)
-                (generer-billedrækken 8)
-                )))
+        (zipmap (range 1 17) (generer-billedrækken 8))))
 
 
 (defn miniapp []
@@ -78,17 +85,18 @@
                 [:td "Ny runde"]
                 [:td [:input {:type "button" :value "Start ny runde" :on-click #(nyt-spil)}]]]
                [:tr
-                 [:td "Player 1"]
-                 [:td  {:colspan "1"} [:input#result {:readonly "" :type "text" :value  ((@tilstand :player1) :points) }]]]
+                [:td "Player 1: point i nuværende runde ="]
+                ;[:td  {:colspan "1"} [:input#result {:readonly "" :type "text" :value  ((@tilstand :player1) :points) }]]
+                [:td ((@tilstand :player1) :points)]]
                 [:tr
-                 [:td "Player 2"]
+                 [:td "Player 2: point i nuværende runde ="]
                  [:td ((@tilstand :player2) :points)]]
                 [:tr
-                 [:td "Næste tur"]
-                 [:td (@tilstand :næstespiller)]]
+                 [:td "Næste tur:"]
+                 [:td (if (even? (@tilstand :næstespiller)) "Player 1" "Player 2")]]
                 [:tr
-                 [:td "Total Score i samtilige spil"]
-                 [:td "Player1 20 Player2 30"]
+                 [:td "Total Score i samtilige spil:"]
+                 [:td "Player 1: " ((@tilstand :player1) :antalvundnespil) ", Player 2: " ((@tilstand :player2) :antalvundnespil)]
                  ]]]]]))
 
 ; Herunder ligger funktionerne til at starte det hele op. Dem behøver I ikke bekymre jer om i første omgang
