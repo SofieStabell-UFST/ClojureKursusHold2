@@ -1,7 +1,9 @@
 (ns memorygame.app
   (:require
     [reagent.core :as r]
-    [reagent.dom :as rdom]))
+    [reagent.dom :as rdom]
+    [memorygame.css :as css]
+    ))
 
 (defn generer-billedrækken [x & cheat]
       (if cheat
@@ -28,8 +30,14 @@
                                     }
                      }))
 
-(defn spil [event]
-      (let [[placering kort] event]
+(defn spil [event element]
+      (let [
+            [placering kort] event
+            elm  (-> js/document
+                     (.getElementById element))
+            ]
+           (js/alert (css/classes-of elm))
+
            (if (nil? (@tilstand :kort))
              (do
                (swap! tilstand assoc-in [:kort] kort))
@@ -45,12 +53,14 @@
       (print @tilstand))
 
 (defn kort [xs]
-      [:td {:on-click #(spil xs) :id (str "felt-" (first xs))}
-       [:div.col
-        [:div.flip-card
-         [:div.flip-card-inner
-          [:div.flip-card-front [:img {:src "images/halloween-background.png"}]]
-          [:div.flip-card-back [:img {:src (str "images/halloween-" (last xs) ".png")}]]]]]])
+      (let [element (str "felt-" (first xs))]
+
+        [:td {:on-click #(spil xs element)}
+         [:div.col
+          [:div.flip-card
+           [:div.flip-card-inner {:id element}
+            [:div.flip-card-front [:img {:src "images/halloween-background.png"}]]
+            [:div.flip-card-back [:img {:src (str "images/halloween-" (last xs) ".png")}]]]]]]))
 
 (defn nyt-spil []
       (reset!
