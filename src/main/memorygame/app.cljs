@@ -15,7 +15,8 @@
 (def billedrækken (r/atom (zipmap (range 1 17) (generer-billedrækken 8 :cheat ))))
 (def allerede-vundet (r/atom ()))
 (def tilstand (r/atom {
-                     :kort         nil
+                      :kort         nil
+                       :placering nil    ; på gættet kort.
 
                      :næstespiller 0
                      :player1      {
@@ -39,7 +40,9 @@
 
            (if (nil? (@tilstand :kort))
              (do
-               (swap! tilstand assoc-in [:kort] kort))
+               (swap! tilstand assoc-in [:kort] kort)
+               (swap! tilstand assoc-in [:placering] element)
+               )
              (do
                (if (and (= kort (@tilstand :kort)) (not (some #(= kort %) @allerede-vundet)))
                  (do
@@ -47,8 +50,8 @@
                                               (even? (@tilstand :næstespiller)) :player1 :player2) :points] inc)
                    (swap! allerede-vundet conj kort)
                    (print @allerede-vundet)
-                   (set! (.-innerHTML elm) [:td])
-                   (set! (.-innerHTML elm) "[:td]")
+                   (set! (.-innerHTML elm) "")
+                   (set! (.-innerHTML (@tilstand :placering)) "")
                    )
                  (swap! tilstand update-in [:næstespiller] inc))
                (swap! tilstand assoc-in [:kort] nil))))
