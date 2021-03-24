@@ -61,7 +61,7 @@
                (css/remove-class! (-> js/document (.getElementById (@tilstand :placering))) "flip-card-transform")
                (swap! tilstand update-in [:næstespiller] inc)
                (swap! tilstand assoc-in [:placering] nil)
-               (swap! tilstand assoc-in [:kort] nil)))
+               (swap! tilstand assoc-in [:kort] nil)))))
            ; tjek om spillet er slut.
 
 
