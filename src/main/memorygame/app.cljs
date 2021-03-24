@@ -86,9 +86,7 @@
 (defn nyt-spil []
       (reset!
         billedrækken
-        (zipmap (range 1 17)
-                (generer-billedrækken 8)
-                )))
+        (zipmap (range 1 17) (generer-billedrækken 8))))
 
 
 (defn miniapp []
@@ -109,18 +107,21 @@
                 [:td "Ny runde"]
                 [:td [:input {:type "button" :value "Start ny runde" :on-click #(nyt-spil)}]]]
                [:tr
-                [:td "Player 1"]
-                [:td {:colspan "1"} [:input#result {:readonly "" :type "text" :value ((@tilstand :player1) :points)}]]]
+                [:td "Player 1: point i nuværende runde ="]
+                ;[:td  {:colspan "1"} [:input#result {:readonly "" :type "text" :value  ((@tilstand :player1) :points) }]]
+                [:td ((@tilstand :player1) :points)]]
                [:tr
-                [:td "Player 2"]
+                [:td "Player 2: point i nuværende runde ="]
                 [:td ((@tilstand :player2) :points)]]
                [:tr
-                [:td "Næste tur"]
+                [:td "Næste tur:"]
                 [:td (@tilstand :næstespiller)]]
                [:tr
-                [:td "Total Score i samtilige spil"]
-                [:td "Player1 20 Player2 30"]
+                [:td "Total Score i samtilige spil:"]
+                [:td "Player 1: " ((@tilstand :player1) :antalvundnespil) ", Player 2: " ((@tilstand :player2) :antalvundnespil)]
                 ]]]]]))
+
+
 
 ; Herunder ligger funktionerne til at starte det hele op. Dem behøver I ikke bekymre jer om i første omgang
 (defn ^:export run []
