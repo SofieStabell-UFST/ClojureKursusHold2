@@ -26,32 +26,28 @@
           )))
 
 (defn display-cards [n]
-      ;  (js/console.log (str "card no" n))
+      (js/console.log (str "card no" n))
+      ;(js/console.log (str "status " status))
       [:div.flip-card
        [:div.flip-card-inner
         {:class    [(when @flip "flip")]
          :on-click (fn []
                        (if @flip
-                             (do
-                               (reset! flip false)
-                               (js/console.log "flip value inside show" @flip))
-                             (do
-                               (reset! flip true)
-                               (js/console.log "flip value inside hide" @flip)
-                               )
-                             )
+                         (do
+                           (reset! flip false)
+                           (js/console.log "flip value inside show" @flip)
+                           (js/console.log "card clicked in true cond and status is" n))
+                         (do
+                           (reset! flip true)
+                           (js/console.log "flip value inside hide" @flip)
+                           (js/console.log "card clicked inside else and status" n)
+                           )
+                         )
                        )
          }
         [:div.flip-card-front [:img {:src "images/halloween-background.png"}]]
         [:div.flip-card-back [:img {:src (str "images/halloween-" n ".png")}]]
         ]])
-;; [:div.col
-;; [:div.flip-card
-;; [:div.flip-card-inner
-;; [:div.flip-card-front [:img {:src "images/halloween-background.png"}]]
-;; [:div.flip-card-back [:img {:src "images/halloween-" n ".png"}]]]]]
-;; )
-
 
 (defn display-control-panel []
       [:div.display-panel-container
@@ -78,12 +74,12 @@
 
 ;; (def data (r/atom 
 (def data
-  "create 16 maps with 8 maps/pairs from 1-8 with a boolean false. 
+  "create 16 maps with 8 maps/pairs from 1-8 with a boolean false.
   false is going to be used to check if these cards is done"
-  (shuffle [{:no 1 :done false} {:no 2 :done false} {:no 3, :done false} {:no 4, :done false}
-            {:no 1 :done false} {:no 2 :done false} {:no 3, :done false} {:no 4, :done false}
-            {:no 5 :done false} {:no 6 :done false} {:no 7, :done false} {:no 8, :done false}
-            {:no 5 :done false} {:no 6 :done false} {:no 7, :done false} {:no 8, :done false}
+  (shuffle [{:no 1 :flipped false} {:no 2 :flipped false} {:no 3, :flipped false} {:no 4, :flipped false}
+            {:no 1 :flipped false} {:no 2 :flipped false} {:no 3, :flipped false} {:no 4, :flipped false}
+            {:no 5 :flipped false} {:no 6 :flipped false} {:no 7, :flipped false} {:no 8, :flipped false}
+            {:no 5 :flipped false} {:no 6 :flipped false} {:no 7, :flipped false} {:no 8, :flipped false}
             ]))
 
 
@@ -93,10 +89,8 @@
 
 (defn miniapp []
       [:div
-       ;[display-control-panel]
+       [display-control-panel]
        [:div.flex-container
-        ;; (for [_ (range 1 3)]
-        ;; (for [i (range 1 3)] (display-cards i))
         (for [x data]
              [display-cards (x :no)]
              )]])
