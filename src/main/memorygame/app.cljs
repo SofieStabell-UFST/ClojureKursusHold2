@@ -14,20 +14,20 @@
 (def a (r/atom nil))
 (def billedrækken (r/atom (zipmap (range 1 17) (generer-billedrækken 8 :cheat))))
 (def tilstand (r/atom {
-                       :kort         nil
-                       :placering    nil    ; på gættet kort.
+                       :kort             nil
+                       :placering        nil                ; på gættet kort.
 
-                       :næstespiller 0
-                       :player1      {
-                                      :points          0
-                                      :name            "Peter"
-                                      :antalvundnespil 0
-                                      }
-                       :player2      {
-                                      :points          0
-                                      :name            "Shane"
-                                      :antalvundnespil 0
-                                      }
+                       :nuværendespiller :player1
+                       :player1          {
+                                          :points          0
+                                          :name            "Peter"
+                                          :antalvundnespil 0
+                                          }
+                       :player2          {
+                                          :points          0
+                                          :name            "Shane"
+                                          :antalvundnespil 0
+                                          }
                        }))
 
 
@@ -36,47 +36,71 @@
             [placering kort] event
             elm (-> js/document
                     (.getElementById element))
-            classes [:flip-card-front :flip-card-back]
             ]
+           ;; Vend kortet om, så det er synligt.
            (css/add-class! elm "flip-card-transform")
+           (println @tilstand)
 
            (cond
              ;  (first click, kort gemt i tilstand)
-             (nil? (@tilstand :kort)) (do
-                                        (swap! tilstand assoc-in [:kort] kort)
-                                        (swap! tilstand assoc-in [:placering] element))
+             (nil? (@tilstand :kort))
+             (do
+               (swap! tilstand assoc-in [:kort] kort)
+               (swap! tilstand assoc-in [:placering] element))
 
-             ;  (hvis kortene er ens, slet kortene og giv point til spileren, tjek om spillet er slut (giv match point), spilleren fortsaetter)
+             ;  (hvis kortene er ens, giv point til spileren og slet kortene Reset :kort og :placering )
              (and (= kort (@tilstand :kort)) (not (= placering (@tilstand :placering))))
              (do
-               (swap! tilstand update-in [(if
-                                            (even? (@tilstand :næstespiller)) :player1 :player2) :points] inc)
+               (println @tilstand)
+               (println "Før letten")
+               (let [nuværendespiller
+                     (@tilstand :nuværendespiller)]
+                    (println nuværendespiller)
+                    (swap! tilstand update-in [nuværendespiller :points] inc)
+                    )
+               (println @tilstand)
                (css/add-class! elm "flip-card-hidden")
-               (css/add-class! (-> js/document (.getElementById (@tilstand :placering))) "flip-card-hidden"))
+               (css/add-class! (-> js/document (.getElementById (@tilstand :placering))) "flip-card-hidden")
+
+               (swap! tilstand assoc-in [:kort] nil)
+               (swap! tilstand assoc-in [:placering] nil)
+               (println @tilstand)
+
+               ; tjek om spillet er slut.
+
+               )
 
              ;  (hvis kortene ikke er ens, vend bagsiden opad paa begge kort, skift spilleren)
              :else
              (do
+               ; Wait five seconds so we can see the picture
+
                (css/remove-class! elm "flip-card-transform")
                (css/remove-class! (-> js/document (.getElementById (@tilstand :placering))) "flip-card-transform")
-               (swap! tilstand update-in [:næstespiller] inc)
+               (let [
+                     nuværendespiller (@tilstand :nuværendespiller)
+                     swappedspiller (#(if (= % :player1) :player2 :player1) nuværendespiller)
+                     ]
+
+                    (swap! tilstand assoc-in [:nuværendespiller] swappedspiller))
+
                (swap! tilstand assoc-in [:placering] nil)
-               (swap! tilstand assoc-in [:kort] nil)))
-           ; tjek om spillet er slut.
+               (swap! tilstand assoc-in [:kort] nil)))))
 
 
-           ;(cond
-           ;  (first click, kort gemt i tilstand og kortet forsiden op)
-           ;
-           ;  (hvis kortene er ens, slet kortene og giv point til spileren, tjek om spillet er slut (giv match point), spilleren fortsaetter)
-           ;
-           ;  (hvis kortene ikke er ens, vend bagsiden opad paa begge kort, skift spilleren))
+
+;(cond
+;  (first click, kort gemt i tilstand og kortet forsiden op)
+;
+;  (hvis kortene er ens, slet kortene og giv point til spileren, tjek om spillet er slut (giv match point), spilleren fortsaetter)
+;
+;  (hvis kortene ikke er ens, vend bagsiden opad paa begge kort, skift spilleren))
 
 
 (defn kort [xs]
       (let [element (str "felt-" (first xs))]
 
-           [:td {:on-click #(spil xs element)}
+           [:td {:on-click #(spil xs element) :id (str "td-" (first xs))}
             [:div.col
              [:div.flip-card
               [:div.flip-card-inner {:id element}
@@ -101,22 +125,23 @@
 
            [:div.hele-molevitten
             [:table {:border 1}
-             (map tr kortmatrix)]
+             [:tbody
+              (map tr kortmatrix)]]
             [:div.scoreboard
              [:table
               [:tbody
                [:tr
                 [:td "Ny runde"]
                 [:td [:input {:type "button" :value "Start ny runde" :on-click #(nyt-spil)}]]]
-               [:tr
+               [:tr {:id "player1-score"}
                 [:td "Player 1"]
-                [:td {:colspan "1"} [:input#result {:readonly "" :type "text" :value ((@tilstand :player1) :points)}]]]
-               [:tr
+                [:td {:colSpan "1"} ((@tilstand :player1) :points)]]
+               [:tr {:id "player2-score"}
                 [:td "Player 2"]
                 [:td ((@tilstand :player2) :points)]]
                [:tr
                 [:td "Næste tur"]
-                [:td (@tilstand :næstespiller)]]
+                [:td (@tilstand :nuværendespiller)]]
                [:tr
                 [:td "Total Score i samtilige spil"]
                 [:td "Player1 20 Player2 30"]
