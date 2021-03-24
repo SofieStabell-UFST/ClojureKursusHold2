@@ -3,6 +3,7 @@
     [reagent.core :as r]
     [reagent.dom :as rdom]))
 (def card-clicked (r/atom nil))
+
 (defonce card-store (r/atom [[false false] [false false]]))
 (defn deck-first [[a b]]
       [(dec a) b])
