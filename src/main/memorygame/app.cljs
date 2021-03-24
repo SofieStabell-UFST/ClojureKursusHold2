@@ -8,6 +8,7 @@
 (def score (r/atom 0))
 (def round (r/atom 0))
 
+(def flip (r/atom false))
 
 (defn show-card [i]
       [:div.flip-card-front [:img {:src (str "images/halloween-" i ".png")}]]
@@ -18,43 +19,38 @@
       )
 
 (defn toggle-card [i]
-  (comment
-      (if @flip
-        (show-card i)
-        (hide-card)
-        )))
+      (comment
+        (if @flip
+          (show-card i)
+          (hide-card)
+          )))
 
 (defn display-cards [n]
-      (js/console.log n)
-      (let [flip? (r/atom false)]
-           [:div.flip-card
-            [:div.flip-card-inner
-             {:class    [(when @flip? "flip")]
-              :on-click (fn []
-                            (if @flip?
-                              (do
-                                (show-card n)
-                                (swap! flip? not)
-                                (js/console.log "A flip value inside show" @flip?))
-                              )
-                            (do
-                              (hide-card)
-                              (swap! flip? not)
-                              (js/console.log "B flip value inside hide" @flip?)
-                              )
-                            )
-              }
-             [:div.flip-card-front [:img {:src "images/halloween-background.png"}]]
-             [:div.flip-card-back [:img {:src (str "images/halloween-" n ".png")}]]
-             ] ]))
-      ;; [:div.col
-       ;; [:div.flip-card
-        ;; [:div.flip-card-inner
-         ;; [:div.flip-card-front [:img {:src "images/halloween-background.png"}]]
-         ;; [:div.flip-card-back [:img {:src "images/halloween-" n ".png"}]]]]]
-      ;; )
-
-
+      ;  (js/console.log (str "card no" n))
+      [:div.flip-card
+       [:div.flip-card-inner
+        {:class    [(when @flip "flip")]
+         :on-click (fn []
+                       (if @flip
+                             (do
+                               (reset! flip false)
+                               (js/console.log "flip value inside show" @flip))
+                             (do
+                               (reset! flip true)
+                               (js/console.log "flip value inside hide" @flip)
+                               )
+                             )
+                       )
+         }
+        [:div.flip-card-front [:img {:src "images/halloween-background.png"}]]
+        [:div.flip-card-back [:img {:src (str "images/halloween-" n ".png")}]]
+        ]])
+;; [:div.col
+;; [:div.flip-card
+;; [:div.flip-card-inner
+;; [:div.flip-card-front [:img {:src "images/halloween-background.png"}]]
+;; [:div.flip-card-back [:img {:src "images/halloween-" n ".png"}]]]]]
+;; )
 
 
 (defn display-control-panel []
@@ -75,14 +71,15 @@
           [:button.dp-btn "Start"]
           [:button.dp-btn "Restart"]]
          [:p.dp-winner.item "*********The winner of this game is********"]
-         ]]]
+         ]
+        ]]
       )
 
 
 ;; (def data (r/atom 
-(def data 
+(def data
   "create 16 maps with 8 maps/pairs from 1-8 with a boolean false. 
-  false is going to be used to check if these cards is done" 
+  false is going to be used to check if these cards is done"
   (shuffle [{:no 1 :done false} {:no 2 :done false} {:no 3, :done false} {:no 4, :done false}
             {:no 1 :done false} {:no 2 :done false} {:no 3, :done false} {:no 4, :done false}
             {:no 5 :done false} {:no 6 :done false} {:no 7, :done false} {:no 8, :done false}
@@ -95,11 +92,14 @@
 ;; (shuffle data)
 
 (defn miniapp []
-      [:div (display-control-panel)
+      [:div
+       ;[display-control-panel]
        [:div.flex-container
         ;; (for [_ (range 1 3)]
-             ;; (for [i (range 1 3)] (display-cards i))
-             (for [x data] (display-cards (x :no)))]])
+        ;; (for [i (range 1 3)] (display-cards i))
+        (for [x data]
+             [display-cards (x :no)]
+             )]])
 
 ; Herunder ligger funktionerne til at starte det hele op. Dem behøver I ikke bekymre jer om i første omgang
 (defn ^:export run []
