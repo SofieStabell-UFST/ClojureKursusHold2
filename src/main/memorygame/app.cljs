@@ -36,7 +36,6 @@
             elm  (-> js/document
                      (.getElementById element))
             ]
-           (js/alert (css/classes-of elm))
 
            (if (nil? (@tilstand :kort))
              (do
@@ -47,7 +46,10 @@
                    (swap! tilstand update-in [(if
                                               (even? (@tilstand :næstespiller)) :player1 :player2) :points] inc)
                    (swap! allerede-vundet conj kort)
-                   (print @allerede-vundet))
+                   (print @allerede-vundet)
+                   (set! (.-innerHTML elm) [:td])
+                   (set! (.-innerHTML elm) "[:td]")
+                   )
                  (swap! tilstand update-in [:næstespiller] inc))
                (swap! tilstand assoc-in [:kort] nil))))
       (print @tilstand))
