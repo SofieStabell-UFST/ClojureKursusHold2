@@ -48,3 +48,16 @@
     color: white;
     transform: rotateY(180deg);
 }
+
+.card-hide {
+    display: none;
+}
+
+.score-board {
+    background-color: cyan;
+    height: 50%;
+}
+
+.in-turn {
+    color: blue;
+}
