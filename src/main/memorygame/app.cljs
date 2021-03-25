@@ -31,7 +31,6 @@
                        }))
 
 
-
 (defn gameover? [tilstand]
       ;hvis nuværende spiller i tilstand har mere end 4 point - gameover
       (let [nuværendespiller (tilstand :nuværendespiller)]
@@ -41,10 +40,6 @@
 
 
 (defn spil [event element]
-
-
-
-
      (let [
             [placering kort] event
 
@@ -106,10 +101,7 @@
 
                           ))
 
-
-
                      (if nil(let [elementer (.getElementsByClassName js/document "flip-card-transform")]
-
                           (js/console.log elementer)
                           ))
 
@@ -119,9 +111,7 @@
                      ;(css/remove-class! gammeltkort "flip-card-transfer")
                      ;nulstil strukturen billedrækken
                      ;nulstil antalpoints for spillerne
-                     )
-
-               )
+                     ))
 
              ;  (hvis kortene ikke er ens, vend bagsiden opad paa begge kort, skift spilleren)
              :else
