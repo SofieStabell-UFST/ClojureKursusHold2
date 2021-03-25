@@ -38,6 +38,17 @@
            (> ((tilstand nuværendespiller) :points) 4))
       )
 
+(defn nyt-spil []
+      (let [
+            felter (map #(str "felt-" %) (range 1 17))
+            feltfunk (fn [felt] (js/alert (.getElementById js/document felt) "flip-card-inner" ))
+         ]
+           (do
+             (reset! billedrækken
+                     (zipmap (range 1 17) (generer-billedrækken 8))))
+
+           (map feltfunk felter)))
+
 
 (defn spil [event element]
      (let [
@@ -89,21 +100,8 @@
                           (swap! tilstand update-in [nuværendespiller :antalvundnespil] inc))
                      ;initier nyt spil
                      ;generer ny spilleplade
-                     (if nil(reset! billedrækken
-                             (zipmap (range 1 17) (generer-billedrækken 8))))
-                     ;check at alle felter er visible
-                     ;(.getElementsByClassName js/document "class-name")
-                     (if nil(let [elementer (.getElementsByClassName js/document "flip-card-transform")]
 
-                          (js/console.log elementer)
-                          (map #(css/class-reset! % "flip-card-inner") elementer)
-                          ;class-reset! med  flip-card-inner
-
-                          ))
-
-                     (if nil(let [elementer (.getElementsByClassName js/document "flip-card-transform")]
-                          (js/console.log elementer)
-                          ))
+                     (nyt-spil)
 
                      ;()
                      ;(css/remove-class! (-> js/document (.getElementsByClassName "flip-card-transform")))
@@ -130,9 +128,7 @@
 
                         (swap! tilstand assoc-in [:placering] nil)
                         (swap! tilstand assoc-in [:kort] nil)))
-
                5000))))
-
 
 
 ;(cond
@@ -153,12 +149,6 @@
                [:div.flip-card-front [:img {:src "images/halloween-background.png"}]]
                [:div.flip-card-back [:img {:src (str "images/halloween-" (last xs) ".png")}]]]]]]))
 
-(defn nyt-spil []
-      (reset!
-        billedrækken
-        (zipmap (range 1 17)
-                (generer-billedrækken 8)
-                )))
 
 
 (defn miniapp []
