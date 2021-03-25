@@ -34,11 +34,14 @@
 (defn spil [event element]
       (let [
             [placering kort] event
+
             elm (-> js/document
                     (.getElementById element))
             ]
            ;; Vend kortet om, så det er synligt.
+
            (css/add-class! elm "flip-card-transform")
+
            (println @tilstand)
 
            (cond
@@ -51,20 +54,25 @@
              ;  (hvis kortene er ens, giv point til spileren og slet kortene Reset :kort og :placering )
              (and (= kort (@tilstand :kort)) (not (= placering (@tilstand :placering))))
              (do
-               (println @tilstand)
-               (println "Før letten")
                (let [nuværendespiller
-                     (@tilstand :nuværendespiller)]
+                     (@tilstand :nuværendespiller)
+                     gammeltkort (-> js/document (.getElementById (@tilstand :placering)))
+                     ]
                     (println nuværendespiller)
                     (swap! tilstand update-in [nuværendespiller :points] inc)
-                    )
-               (println @tilstand)
-               (css/add-class! elm "flip-card-hidden")
-               (css/add-class! (-> js/document (.getElementById (@tilstand :placering))) "flip-card-hidden")
 
-               (swap! tilstand assoc-in [:kort] nil)
-               (swap! tilstand assoc-in [:placering] nil)
-               (println @tilstand)
+                    (js/setTimeout
+                      (fn [] (do
+                               (css/add-class! gammeltkort "flip-card-hidden")
+                               (css/add-class! elm "flip-card-hidden")
+                               ))
+                      3000
+                      )
+
+                    (swap! tilstand assoc-in [:kort] nil)
+                    (swap! tilstand assoc-in [:placering] nil)
+                    (println @tilstand)
+                    )
 
                ; tjek om spillet er slut.
 
@@ -72,20 +80,23 @@
 
              ;  (hvis kortene ikke er ens, vend bagsiden opad paa begge kort, skift spilleren)
              :else
-             (do
+
+             (js/setTimeout
                ; Wait five seconds so we can see the picture
+               (fn [] (do
+                        (css/remove-class! elm "flip-card-transform")
+                        (css/remove-class! (-> js/document (.getElementById (@tilstand :placering))) "flip-card-transform")
 
-               (css/remove-class! elm "flip-card-transform")
-               (css/remove-class! (-> js/document (.getElementById (@tilstand :placering))) "flip-card-transform")
-               (let [
-                     nuværendespiller (@tilstand :nuværendespiller)
-                     swappedspiller (#(if (= % :player1) :player2 :player1) nuværendespiller)
-                     ]
+                        (let [
+                              nuværendespiller (@tilstand :nuværendespiller)
+                              swappedspiller (#(if (= % :player1) :player2 :player1) nuværendespiller)
+                              ]
+                             (swap! tilstand assoc-in [:nuværendespiller] swappedspiller))
 
-                    (swap! tilstand assoc-in [:nuværendespiller] swappedspiller))
+                        (swap! tilstand assoc-in [:placering] nil)
+                        (swap! tilstand assoc-in [:kort] nil)))
 
-               (swap! tilstand assoc-in [:placering] nil)
-               (swap! tilstand assoc-in [:kort] nil)))))
+               5000))))
 
 
 
