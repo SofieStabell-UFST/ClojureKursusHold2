@@ -69,6 +69,7 @@
              [:td (cards (+ (* 4 row) col))])
            ])
         ]]]
+    [:tr
      [:td.score-board
       [:th "SCORE BOARD"]
       [:p {:class (when (= 0 @player-in-turn) "in-turn")}
@@ -76,7 +77,7 @@
       [:br]
       [:p {:class (when (= 1 @player-in-turn) "in-turn")}
        (str "Player 2: " @(score 1))]
-      ]
+      ]]
      ]]
    ]
   )
