@@ -31,8 +31,21 @@
                        }))
 
 
+
+(defn gameover? [tilstand]
+      ;hvis nuværende spiller i tilstand har mere end 4 point - gameover
+      (let [nuværendespiller (tilstand :nuværendespiller)]
+
+           (> ((tilstand nuværendespiller) :points) 4))
+      )
+
+
 (defn spil [event element]
-      (let [
+
+
+
+
+     (let [
             [placering kort] event
 
             elm (-> js/document
@@ -75,6 +88,38 @@
                     )
 
                ; tjek om spillet er slut.
+               (when (gameover? @tilstand)
+                     ;opdater antal vundne spil
+                     (let [nuværendespiller (@tilstand :nuværendespiller)]
+                          (swap! tilstand update-in [nuværendespiller :antalvundnespil] inc))
+                     ;initier nyt spil
+                     ;generer ny spilleplade
+                     (if nil(reset! billedrækken
+                             (zipmap (range 1 17) (generer-billedrækken 8))))
+                     ;check at alle felter er visible
+                     ;(.getElementsByClassName js/document "class-name")
+                     (if nil(let [elementer (.getElementsByClassName js/document "flip-card-transform")]
+
+                          (js/console.log elementer)
+                          (map #(css/class-reset! % "flip-card-inner") elementer)
+                          ;class-reset! med  flip-card-inner
+
+                          ))
+
+
+
+                     (if nil(let [elementer (.getElementsByClassName js/document "flip-card-transform")]
+
+                          (js/console.log elementer)
+                          ))
+
+                     ;()
+                     ;(css/remove-class! (-> js/document (.getElementsByClassName "flip-card-transform")))
+                     ;(css/remove-class! gammeltkort "flip-card-hidden")
+                     ;(css/remove-class! gammeltkort "flip-card-transfer")
+                     ;nulstil strukturen billedrækken
+                     ;nulstil antalpoints for spillerne
+                     )
 
                )
 
