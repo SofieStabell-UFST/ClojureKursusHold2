@@ -29,67 +29,74 @@
      ]
     ))
 
-(def data1 (r/atom
-             [{:no 1 :flipped false} {:no 2 :flipped false} {:no 3, :flipped false} {:no 4, :flipped false}
-              ;; {:no 1 :flipped false} {:no 2 :flipped false} {:no 3, :flipped false} {:no 4, :flipped false}
-              {:no 5 :flipped false} {:no 6 :flipped false} {:no 7, :flipped false} {:no 8, :flipped false}
-              ;; {:no 5 :flipped false} {:no 6 :flipped false} {:no 7, :flipped false} {:no 8, :flipped false}
-              ]
-             ))
-
 (def data (r/atom
             [{:no 1 :id 1} {:no 2 :id 2} {:no 3, :id 3} {:no 4, :id 4}
              {:no 1 :id 5} {:no 2 :id 6} {:no 3, :id 7} {:no 4, :id 8}
              {:no 5 :id 9} {:no 6 :id 10} {:no 7, :id 11} {:no 8, :id 12}
-             {:no 5 :id 13} {:no 6 id 14} {:no 7, :id 15} {:no 8, :id 16}
+             {:no 5 :id 13} {:no 6 :id 14} {:no 7, :id 15} {:no 8, :id 16}
              ]
             ))
+
+(def data1 (r/atom
+             [{:no 1 :flipped false :id 1} {:no 2 :flipped false :id 2} {:no 3, :flipped false :id 3} {:no 4, :flipped false :id 4}
+              {:no 5 :flipped false :id 5} {:no 6 :flipped false :id 6} {:no 7, :flipped false :id 7} {:no 8, :flipped false :id 8}
+              {:no 1 :flipped false :id 9} {:no 2 :flipped false :id 10} {:no 3, :flipped false :id 11} {:no 4, :flipped false :id 12}
+              {:no 5 :flipped false :id 13} {:no 6 :flipped false :id 14} {:no 7, :flipped false :id 15} {:no 8, :flipped false :id 16}
+              ]))
+
 
 (defn reset-cards []
       (reset! flip false)
       (reset! clicked-card 0)
       )
 
-
 (defn display-cards [n, id]
-      (let [el (str "card-" id)]
-           [:div.flip-card
-            [:div.flip-card-inner {:id       el
-                                   :on-click (fn []
-                                                 (js/console.log (str "card no" n))
-                                                 (if (and @flip (= n @clicked-card))
-                                                   (do
-                                                     (print "Flipped back. Show back/ghosts")
-                                                     (def elm (-> js/document
-                                                                  (.getElementById el)))
-                                                     (css/remove-class! elm "flip")
-                                                     (reset! flip nil)
-                                                     (reset! clicked-card 0)
-                                                     (js/console.log @clicked-card)
-                                                     )
-                                                   (do
-                                                     (print "Flipped. Show stuff")
-                                                     (def elm (-> js/document
-                                                                  (.getElementById el)))
-                                                     (css/add-class! elm "flip")
-                                                     (reset! flip "flip")
-                                                     (reset! clicked-card n)
-                                                     (js/console.log @clicked-card)
-                                                     ))
 
-                                                 (if (not= n @clicked-card)
-                                                   ( (js/console.log (str @clicked-card " --" n)))
-                                                   (js/setTimeout #(reset-cards) 1000)
-                                                   )
-                                                 )
+  (let [el (str "card-" id)]
+    [:div.flip-card
+     [:div.flip-card-inner 
+      {:id el
+       :on-click (fn []
+                   (js/console.log (str "card no" n))
+                   (if (and @flip (= n @clicked-card))
+                     ;; (if @flip
+                     (do
+                       (print "Flipped back. Show back/ghosts")
+                       (def elm (-> js/document
+                                    (.getElementById el)))
+                       (css/remove-class! elm "flip")
+                       (reset! flip nil)
+                       (reset! clicked-card 0)
+                       (js/console.log @clicked-card)
+                       )
+                     (do
 
-                                   }
+(println @data1)
+;; (println "first A: "(first @data1))
+;; (swap! data1 update-in [0] merge {:no 1 :flipped true :id 1})
+(swap! data1 update-in [0] merge {:flipped true})
+;; (println "first B: "(first @data1))
+(println @data1)
 
+                       (print "Flipped. Show stuff")
+                       (def elm (-> js/document
+                                    (.getElementById el)))
+                       (css/add-class! elm "flip")
+                       (reset! flip "flip")
+                       (reset! clicked-card n)
+                       (js/console.log @clicked-card)
+                       ))
 
+                   (if (not= n @clicked-card)
+                     ( (js/console.log (str @clicked-card " --" n)))
+                     (js/setTimeout #(reset-cards) 1000)
+                     )
+                   )
+       }
 
-             [:div.flip-card-front [:img {:src "images/halloween-background.png"}]]
-             [:div.flip-card-back [:img {:src (str "images/halloween-" n ".png")}]]
-             ]]))
+      [:div.flip-card-front [:img {:src "images/halloween-background.png"}]]
+      [:div.flip-card-back [:img {:src (str "images/halloween-" n ".png")}]]
+      ]]))
 
 (defn display-control-panel []
       [:div.display-panel-container
