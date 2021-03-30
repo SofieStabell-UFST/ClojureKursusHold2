@@ -4,7 +4,7 @@
     [reagent.dom :as rdom]
     [memorygame.css :as css]
     ))
-
+; Testing Jenkins Pipeline
 (defn generer-billedrækken [x & cheat]
       (if cheat
         (interleave (range 1 (inc x)) (range 1 (inc x)))
